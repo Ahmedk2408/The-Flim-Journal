@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-body: "Lora", "Georgia", serif;
+  --font-sans: "DM Sans", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-gold: #C9A84C;
+  --color-gold-hover: #B3933B;
+  --color-bg-dark: #1a1a1a;
+  --color-surface-dark: #111111;
+  --color-text-primary: #F5F5F0;
+  --color-border-dark: #2E2E2E;
+  
+  --animate-marquee: marquee 35s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+}
+
+/* Base resets & typography customization for editorial feel */
+body {
+  background-color: #1a1a1a;
+  color: #F5F5F0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom fade effects and utility styles for the luxurious cinematic hover */
+.card-hover-image {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-container:hover .card-hover-image {
+  transform: scale(1.03);
+}
+
+/* Rich description styles */
+.article-rich-content p {
+  margin-bottom: 2rem;
+  line-height: 1.8;
+  font-size: 1.125rem;
+  font-family: var(--font-body);
+  color: #E2E2D5;
+}
+
+.article-rich-content p.lead {
+  font-size: 1.25rem;
+  color: #F5F5F0;
+}
+
+.article-rich-content h1, 
+.article-rich-content h2, 
+.article-rich-content h3 {
+  font-family: var(--font-serif);
+  color: #C9A84C;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.article-rich-content h2 {
+  font-size: 1.75rem;
+}
+
+.article-rich-content h3 {
+  font-size: 1.4rem;
+}
+
+.article-rich-content blockquote {
+  font-style: italic;
+  font-family: var(--font-serif);
+  border-left: 2px solid #C9A84C;
+  padding-left: 1.5rem;
+  margin: 2.5rem 0;
+  font-size: 1.25rem;
+  color: #F5F5F6;
+  background-color: rgba(17, 17, 17, 0.6);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.article-rich-content img {
+  border: 1px solid #2E2E2E;
+  margin: 2.5rem 0 1rem 0;
+  width: 100%;
+  height: auto;
+}
+
+/* Hide scrollbars for slick category scrolls */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
