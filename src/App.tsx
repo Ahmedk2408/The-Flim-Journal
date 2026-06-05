@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Marquee } from './components/Marquee';
@@ -182,6 +183,7 @@ export default function App() {
       </div>
 
       <Footer onNavigate={handleNavigate} />
+      <Analytics />
     </div>
   );
 }
