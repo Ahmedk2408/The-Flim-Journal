@@ -98,8 +98,8 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Predefined secure administrator credentials as requested
-    const validEmail = 'admin@thefilmjournal.com';
-    const validPassword = 'cinema-authority';
+    const validEmail = 'ahmed@thefilmjournal.com';
+    const validPassword = 'ahmed-cinema-authority';
 
     if (email === validEmail && password === validPassword) {
       setIsAuthenticated(true);
