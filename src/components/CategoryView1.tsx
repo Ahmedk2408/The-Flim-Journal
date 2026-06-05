@@ -25,22 +25,8 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
   );
 
   // Filter post items mapped to this category (only Published posts)
-  // Match by slug OR by category name (handles both storage formats)
   const categoryPosts = [...posts]
-    .filter((p) => {
-      if (p.status !== 'Published') return false;
-      const postCat = p.category.toLowerCase().trim();
-      const slugLower = categorySlug.toLowerCase().trim();
-      // Match against slug directly
-      if (postCat === slugLower) return true;
-      // Match against the category name (e.g. "Box Office Updates" vs "box-office-updates")
-      const catName = currentCategory?.name?.toLowerCase().trim();
-      if (catName && postCat === catName) return true;
-      // Also match slug-ified version of the post category
-      const postCatSlug = postCat.replace(/[^a-z0-9]+/g, '-');
-      if (postCatSlug === slugLower) return true;
-      return false;
-    })
+    .filter((p) => p.status === 'Published' && p.category.toLowerCase() === categorySlug.toLowerCase())
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
   // Pagination bounds
