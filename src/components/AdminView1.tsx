@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Post, Category, SiteSettings } from '../types';
-import { 
+import {
   FileText, FolderMinus, Image as ImageIcon, Settings as SettingsIcon, LogOut,
   Plus, Edit, Trash2, Check, Eye, HelpCircle, ArrowLeft, ToggleLeft, ToggleRight, X, Copy
 } from 'lucide-react';
@@ -10,8 +10,6 @@ interface AdminViewProps {
   categories: Category[];
   settings: SiteSettings;
   onUpdatePosts: (posts: Post[]) => void;
-  onUpsertPost?: (post: Post) => Promise<void>;
-  onDeletePost?: (id: string) => Promise<void>;
   onUpdateCategories: (categories: Category[]) => void;
   onUpdateSettings: (settings: SiteSettings) => void;
   onNavigate: (view: string, category?: string | null, slug?: string | null) => void;
@@ -22,8 +20,6 @@ export const AdminView: React.FC<AdminViewProps> = ({
   categories,
   settings,
   onUpdatePosts,
-  onUpsertPost,
-  onDeletePost,
   onUpdateCategories,
   onUpdateSettings,
   onNavigate
@@ -98,8 +94,8 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Predefined secure administrator credentials as requested
-    const validEmail = 'admin@thefilmjournal.com';
-    const validPassword = 'cinema-authority';
+    const validEmail = 'ahmed@thefilmjournal.com';
+    const validPassword = 'ahmed-cinema-authority';
 
     if (email === validEmail && password === validPassword) {
       setIsAuthenticated(true);
@@ -227,24 +223,14 @@ export const AdminView: React.FC<AdminViewProps> = ({
       });
     }
 
-    // Use per-post upsert (Supabase) if available, else fall back to bulk
-    if (onUpsertPost) {
-      const savedPost = postFormMode === 'add' ? updatedPosts[0] : updatedPosts.find(p => p.id === editingPost?.id) || updatedPosts[0];
-      onUpsertPost(savedPost);
-    } else {
-      onUpdatePosts(updatedPosts);
-    }
+    onUpdatePosts(updatedPosts);
     setIsPostFormOpen(false);
     setEditingPost(null);
   };
 
   const handleDeletePost = (id: string) => {
-    if (onDeletePost) {
-      onDeletePost(id);
-    } else {
-      const filtered = posts.filter((p) => p.id !== id);
-      onUpdatePosts(filtered);
-    }
+    const filtered = posts.filter((p) => p.id !== id);
+    onUpdatePosts(filtered);
     setConfirmDeleteId(null);
   };
 
@@ -260,12 +246,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
       return p;
     });
     // Ensure at least one has it if possible
-    if (onUpsertPost) {
-      const toggled = updated.find(p => p.id === post.id);
-      if (toggled) onUpsertPost(toggled);
-    } else {
-      onUpdatePosts(updated);
-    }
+    onUpdatePosts(updated);
   };
 
   // Add category handler
@@ -325,7 +306,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
   // If NOT Authenticated, show login template
   if (!isAuthenticated) {
     return (
-      <div 
+      <div
         id="admin-login-template"
         className="min-h-[80vh] flex items-center justify-center px-4 py-16"
       >
@@ -343,7 +324,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
               <label className="text-[10px] uppercase tracking-wider text-gray-400 block font-semibold">Admin Account Email</label>
               <input
                 type="email"
-                placeholder="admin@thefilmjournal.com"
+                placeholder="abc@tfj.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -376,9 +357,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
               Access Command Deck
             </button>
             <div className="text-center">
-              <span className="text-[10px] text-gray-600 font-mono">
-                Hint: admin@thefilmjournal.com / cinema-authority
-              </span>
+
             </div>
           </form>
         </div>
@@ -389,7 +368,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
   // AUTHENTICATED CONTROL PANEL INTERFACE
   return (
     <div id="cms-control-deck-root" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-      
+
       {/* Header Panel */}
       <div className="border-b border-[#2E2E2E] pb-6 mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -424,7 +403,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        
+
         {/* SIDE BAR NAVIGATION */}
         <div className="lg:col-span-1 space-y-2">
           {[
@@ -441,11 +420,10 @@ export const AdminView: React.FC<AdminViewProps> = ({
                   setActiveTab(tab.id as any);
                   setIsPostFormOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 rounded-xs text-xs uppercase tracking-wider font-semibold duration-200 flex items-center gap-2.5 cursor-pointer border-l-2 ${
-                  activeTab === tab.id
-                    ? 'bg-[#111111] text-[#C9A84C] border-[#C9A84C]'
-                    : 'text-gray-400 border-transparent hover:bg-[#111111]/40 hover:text-white'
-                }`}
+                className={`w-full text-left px-4 py-3 rounded-xs text-xs uppercase tracking-wider font-semibold duration-200 flex items-center gap-2.5 cursor-pointer border-l-2 ${activeTab === tab.id
+                  ? 'bg-[#111111] text-[#C9A84C] border-[#C9A84C]'
+                  : 'text-gray-400 border-transparent hover:bg-[#111111]/40 hover:text-white'
+                  }`}
               >
                 <IconComp size={14} />
                 <span>{tab.label}</span>
@@ -456,7 +434,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
 
         {/* WORKSPACE AREA */}
         <div className="lg:col-span-4 bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm min-h-[500px]">
-          
+
           {/* TAB 1: ARTICLE WRITING & REVIEWS TABLE */}
           {activeTab === 'posts' && !isPostFormOpen && (
             <div className="space-y-6">
@@ -520,11 +498,10 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           </button>
                         </td>
                         <td className="py-4 px-2">
-                          <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-sm font-semibold ${
-                            post.status === 'Published' 
-                              ? 'bg-emerald-950/30 border border-emerald-900/50 text-emerald-400'
-                              : 'bg-amber-950/20 border border-amber-900/40 text-amber-500'
-                          }`}>
+                          <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-sm font-semibold ${post.status === 'Published'
+                            ? 'bg-emerald-950/30 border border-emerald-900/50 text-emerald-400'
+                            : 'bg-amber-950/20 border border-amber-900/40 text-amber-500'
+                            }`}>
                             {post.status}
                           </span>
                         </td>
@@ -617,7 +594,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4 text-xs">
-                  
+
                   {/* Row 1: Title & Auto-slug */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
@@ -747,7 +724,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
                   <div className="space-y-2">
                     <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                       <label className="text-gray-400 font-semibold block uppercase tracking-wider text-[9px]">ARTICLE ESSAY BODY (HTML FORMATTED)</label>
-                      
+
                       {/* Short editorial tags layout shortcuts */}
                       <div className="flex flex-wrap gap-1.5">
                         <button
@@ -816,8 +793,8 @@ export const AdminView: React.FC<AdminViewProps> = ({
               {/* LIST CATEGORIES */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {categories.map((cat) => (
-                  <div 
-                    key={cat.id} 
+                  <div
+                    key={cat.id}
                     className="p-4 bg-black/40 border border-[#2E2E2E] rounded-xs flex items-start justify-between gap-4 relative group hover:border-[#C9A84C]/40 duration-200"
                   >
                     <div className="space-y-1.5 flex-1 pr-4">
@@ -832,7 +809,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
 
                     <button
                       onClick={() => {
-                        if(confirm(`Are you sure you want to delete the category "${cat.name}"? Articles already matching this desk won't be deleted, but they'll lack matching directory routes.`)) {
+                        if (confirm(`Are you sure you want to delete the category "${cat.name}"? Articles already matching this desk won't be deleted, but they'll lack matching directory routes.`)) {
                           handleDeleteCategory(cat.id);
                         }
                       }}
@@ -934,8 +911,8 @@ export const AdminView: React.FC<AdminViewProps> = ({
               {/* MEDIA GALLERY GRID */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {mediaImages.map((img, idx) => (
-                  <div 
-                    key={idx} 
+                  <div
+                    key={idx}
                     className="group border border-[#2E2E2E] hover:border-[#C9A84C] duration-250 rounded-xs overflow-hidden bg-black/30 flex flex-col justify-between"
                   >
                     <div className="aspect-[16/10] bg-black/60 overflow-hidden relative">
@@ -973,7 +950,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
               </div>
 
               <div className="space-y-4">
-                
+
                 <div className="space-y-1.5">
                   <label className="text-gray-400 font-semibold block uppercase tracking-wider text-[9px]">SITE SUBTITLE / TAGLINE ACCENT</label>
                   <input

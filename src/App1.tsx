@@ -9,24 +9,28 @@ import { AboutView } from './components/AboutView';
 import { SearchView } from './components/SearchView';
 import { AdminView } from './components/AdminView';
 
-import {
-  getPosts, savePosts, upsertPost, deletePost,
-  getCategories, saveCategories,
-  getSettings, saveSettings,
-  subscribeToPostChanges
+// Local storage and helpers loader
+import { 
+  getPosts, savePosts, 
+  getCategories, saveCategories, 
+  getSettings, saveSettings 
 } from './data';
 import { Post, Category, SiteSettings } from './types';
 
 export default function App() {
-  const [currentView, setCurrentView]         = useState<string>('home');
+  // Application parameters state (SPA simulated navigation)
+  // Options: 'home' | 'category' | 'article' | 'about' | 'search' | 'admin'
+  const [currentView, setCurrentView] = useState<string>('home');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [articleSlug, setArticleSlug]         = useState<string | null>(null);
-  const [searchQuery, setSearchQuery]         = useState<string>('');
-  const [loading, setLoading]                 = useState<boolean>(true);
+  const [articleSlug, setArticleSlug] = useState<string | null>(null);
+  
+  // Archival search state
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const [posts, setPosts]           = useState<Post[]>([]);
+  // Primary publishing content streams
+  const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [settings, setSettings]     = useState<SiteSettings>({
+  const [settings, setSettings] = useState<SiteSettings>({
     tagline: '',
     facebookLink: '',
     twitterLink: '',
@@ -34,66 +38,36 @@ export default function App() {
     mailchimpEmbed: ''
   });
 
-  // ── Load everything from Supabase (or localStorage fallback) on mount ──
+  // Load publication assets on mount
   useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      const [fetchedPosts, fetchedCategories, fetchedSettings] = await Promise.all([
-        getPosts(),
-        getCategories(),
-        getSettings(),
-      ]);
-      setPosts(fetchedPosts);
-      setCategories(fetchedCategories);
-      setSettings(fetchedSettings);
-      setLoading(false);
-    }
-    loadData();
+    setPosts(getPosts());
+    setCategories(getCategories());
+    setSettings(getSettings());
   }, []);
 
-  // ── Real-time listener: refresh posts whenever any browser saves one ──
-  useEffect(() => {
-    const unsubscribe = subscribeToPostChanges(async () => {
-      const refreshed = await getPosts();
-      setPosts(refreshed);
-    });
-    return () => { unsubscribe(); };
-  }, []);
-
-  // ── Update handlers ──
-  const handleUpdatePosts = async (newPosts: Post[]) => {
+  // Update handlers with synchronizer
+  const handleUpdatePosts = (newPosts: Post[]) => {
     setPosts(newPosts);
-    await savePosts(newPosts);
+    savePosts(newPosts);
   };
 
-  // Called by AdminView when a single post is saved/edited
-  const handleUpsertPost = async (post: Post) => {
-    await upsertPost(post);
-    const refreshed = await getPosts();
-    setPosts(refreshed);
-  };
-
-  // Called by AdminView when a post is deleted
-  const handleDeletePost = async (id: string) => {
-    await deletePost(id);
-    const refreshed = await getPosts();
-    setPosts(refreshed);
-  };
-
-  const handleUpdateCategories = async (newCategories: Category[]) => {
+  const handleUpdateCategories = (newCategories: Category[]) => {
     setCategories(newCategories);
-    await saveCategories(newCategories);
+    saveCategories(newCategories);
   };
 
-  const handleUpdateSettings = async (newSettings: SiteSettings) => {
+  const handleUpdateSettings = (newSettings: SiteSettings) => {
     setSettings(newSettings);
-    await saveSettings(newSettings);
+    saveSettings(newSettings);
   };
 
+  // Navigations dispatcher (Supports instant page triggers)
   const handleNavigate = (view: string, category: string | null = null, slug: string | null = null) => {
     setCurrentView(view);
     setSelectedCategory(category);
     setArticleSlug(slug);
+
+    // Auto scroll view helper
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
@@ -103,41 +77,36 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
-        <div className="text-center">
-          <div className="text-[#C9A84C] font-serif text-4xl mb-4">TFJ</div>
-          <div className="text-[#F5F5F0]/50 text-sm uppercase tracking-widest">Loading...</div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#1a1a1a] text-[#F5F5F0]">
       <div>
-        <Header
+        {/* 1. Header component */}
+        <Header 
           currentView={currentView}
           selectedCategory={selectedCategory}
           onNavigate={handleNavigate}
           onSearch={handleSearchTrigger}
         />
 
+        {/* 2. Secondary Marquee Headlines Ticker (5 latest headlines sliding horizontally, hidden from admin dashboard scope) */}
         {currentView !== 'admin' && posts.length > 0 && (
-          <Marquee
-            posts={posts}
-            onArticleClick={(slug) => handleNavigate('article', null, slug)}
+          <Marquee 
+            posts={posts} 
+            onArticleClick={(slug) => handleNavigate('article', null, slug)} 
           />
         )}
 
+        {/* 3. Main Workspace router matching the state view */}
         <main className="flex-grow">
           {currentView === 'home' && (
-            <HomeView posts={posts} onNavigate={handleNavigate} />
+            <HomeView 
+              posts={posts} 
+              onNavigate={handleNavigate} 
+            />
           )}
 
           {currentView === 'category' && selectedCategory && (
-            <CategoryView
+            <CategoryView 
               categorySlug={selectedCategory}
               posts={posts}
               categories={categories}
@@ -146,7 +115,7 @@ export default function App() {
           )}
 
           {currentView === 'article' && articleSlug && (
-            <ArticleView
+            <ArticleView 
               slug={articleSlug}
               posts={posts}
               onNavigate={handleNavigate}
@@ -154,10 +123,12 @@ export default function App() {
             />
           )}
 
-          {currentView === 'about' && <AboutView />}
+          {currentView === 'about' && (
+            <AboutView />
+          )}
 
           {currentView === 'search' && (
-            <SearchView
+            <SearchView 
               initialQuery={searchQuery}
               posts={posts}
               onNavigate={handleNavigate}
@@ -166,13 +137,11 @@ export default function App() {
           )}
 
           {currentView === 'admin' && (
-            <AdminView
+            <AdminView 
               posts={posts}
               categories={categories}
               settings={settings}
               onUpdatePosts={handleUpdatePosts}
-              onUpsertPost={handleUpsertPost}
-              onDeletePost={handleDeletePost}
               onUpdateCategories={handleUpdateCategories}
               onUpdateSettings={handleUpdateSettings}
               onNavigate={handleNavigate}
@@ -181,6 +150,7 @@ export default function App() {
         </main>
       </div>
 
+      {/* 4. Editorial footer component */}
       <Footer onNavigate={handleNavigate} />
     </div>
   );
