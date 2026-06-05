@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Marquee } from './components/Marquee';
@@ -182,6 +183,7 @@ export default function App() {
       </div>
 
       <Footer onNavigate={handleNavigate} />
+      <SpeedInsights />
     </div>
   );
 }
