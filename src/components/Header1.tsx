@@ -20,12 +20,12 @@ export const Header: React.FC<HeaderProps> = ({
   const [searchVal, setSearchVal] = useState('');
 
   const menuItems = [
-    { name: 'Box Office Updates', slug: 'box-office-updates' },
     { name: 'Reviews', slug: 'reviews' },
-    { name: 'Monday Drop', slug: 'monday-drop' },
-    { name: 'Upcoming Releases', slug: 'upcoming-releases' },
-    { name: "What's Hot", slug: 'whats-hot' },
     { name: 'News', slug: 'news' },
+    { name: 'Features', slug: 'features' },
+    { name: 'Interviews', slug: 'interviews' },
+    { name: 'Box Office', slug: 'box-office' },
+    { name: 'Streaming', slug: 'streaming' },
     { name: 'About', slug: 'about' }
   ];
 

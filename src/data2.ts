@@ -5,12 +5,12 @@ import { supabase } from './supabaseClient';
 // DEFAULTS  (used on first load / fallback)
 // ─────────────────────────────────────────────
 export const DEFAULT_CATEGORIES: Category[] = [
-  { id: 'box-office-updates',  name: 'Box Office Updates',  slug: 'box-office-updates',  description: 'Weekly box office results, tracking, and theatrical performance analysis.' },
-  { id: 'reviews',             name: 'Reviews',             slug: 'reviews',             description: 'Authoritative, unflinching evaluation of current cinema.' },
-  { id: 'monday-drop',         name: 'Monday Drop',         slug: 'monday-drop',         description: 'Every Monday — the freshest new releases hitting screens and streaming.' },
-  { id: 'upcoming-releases',   name: 'Upcoming Releases',   slug: 'upcoming-releases',   description: 'Preview the most anticipated films coming to cinemas and streaming.' },
-  { id: 'whats-hot',           name: "What's Hot",          slug: 'whats-hot',           description: 'The films, shows, and moments everyone is talking about right now.' },
-  { id: 'news',                name: 'News',                slug: 'news',                description: 'Breaking film industry news, casting announcements, and exclusives.' },
+  { id: 'reviews',    name: 'Reviews',    slug: 'reviews',    description: 'Authoritative, unflinching evaluation of current cinema.' },
+  { id: 'news',       name: 'News',       slug: 'news',       description: 'Breaking Hollywood exclusives, festival announcements, casting developments.' },
+  { id: 'features',   name: 'Features',   slug: 'features',   description: 'In-depth essays, retrospectives, and deep conceptual dives.' },
+  { id: 'interviews', name: 'Interviews', slug: 'interviews', description: 'Unfiltered conversations with leading creators and artists.' },
+  { id: 'box-office', name: 'Box Office', slug: 'box-office', description: 'Data-informed analysis of theatrical trends and studio finances.' },
+  { id: 'streaming',  name: 'Streaming',  slug: 'streaming',  description: 'Examining the landscape of digital distribution and streaming.' },
 ];
 
 export const DEFAULT_SETTINGS: SiteSettings = {
