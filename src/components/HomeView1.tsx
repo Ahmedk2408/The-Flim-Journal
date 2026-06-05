@@ -53,68 +53,66 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
       
       {/* 1. CINEMATIC HERO SECTION */}
       {heroPost && (
-        <section
+        <section 
           id="cinematic-hero-section"
-          className="w-full border-b border-[#2E2E2E] group"
+          className="relative h-[65vh] md:h-[75vh] min-h-[480px] w-full flex items-end overflow-hidden group border-b border-[#2E2E2E]"
         >
-          {/* TOP — Full width image, no text on top of it */}
-          <div className="relative w-full h-[52vw] max-h-[540px] min-h-[220px] overflow-hidden">
-            <img
-              src={heroPost.image}
+          {/* Animated Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={heroPost.image} 
               alt={heroPost.title}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100 group-hover:scale-[1.02]"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100 group-hover:scale-[1.025]"
             />
-            {/* Subtle bottom fade so image blends into text section */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent" />
+            {/* Elegant cinematic black gradient overlaid at the bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/40 to-black/35 z-10" />
           </div>
 
-          {/* BOTTOM — Clean text section, fully readable, no overlap */}
-          <div className="bg-[#111111] w-full">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
-              <div className="max-w-3xl space-y-4">
+          {/* Hero Article Editorial Overlay */}
+          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 md:pb-14 w-full">
+            <div className="max-w-3xl space-y-4">
+              
+              <span className="inline-block text-[#C9A84C] text-[10px] md:text-xs tracking-[0.2em] font-sans font-extrabold uppercase bg-[#111111]/85 border border-[#2E2E2E] px-3 py-1 rounded-sm">
+                FEATURED {heroPost.category.toUpperCase()}
+              </span>
 
-                <span className="inline-block text-[#C9A84C] text-[10px] md:text-xs tracking-[0.2em] font-sans font-extrabold uppercase border border-[#C9A84C]/40 px-3 py-1 rounded-sm">
-                  FEATURED {heroPost.category.toUpperCase()}
+              <button 
+                onClick={() => handleCardClick(heroPost.slug)}
+                className="block group/title text-left focus:outline-none cursor-pointer"
+              >
+                <h2 className="text-3xl md:text-5xl lg:text-5.5xl font-serif text-[#F5F5F0] font-normal leading-tight md:leading-[1.15] tracking-tight group-hover/title:text-[#C9A84C] duration-300">
+                  {heroPost.title}
+                </h2>
+              </button>
+
+              <p className="text-gray-300 font-sans text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-3 font-normal opacity-90 pr-2">
+                {heroPost.excerpt}
+              </p>
+
+              {/* Author & Reading Stats */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-xs text-gray-400 font-sans">
+                <span className="font-semibold text-gray-300">
+                  By <span className="text-[#F5F5F0]">{heroPost.author}</span>
                 </span>
+                <span className="text-gray-600">|</span>
+                <span className="flex items-center gap-1">
+                  <Clock size={12} className="text-[#C9A84C]" />
+                  {heroPost.readTime}
+                </span>
+                <span className="text-gray-600">&bull;</span>
+                <span>{formatRelativeTime(heroPost.publishedAt)}</span>
+              </div>
 
+              {/* Read More button */}
+              <div className="pt-4">
                 <button
                   onClick={() => handleCardClick(heroPost.slug)}
-                  className="block text-left focus:outline-none cursor-pointer"
+                  className="bg-[#C9A84C] hover:bg-black hover:text-[#C9A84C] border border-transparent hover:border-[#C9A84C] text-black font-sans font-bold text-xs uppercase tracking-widest px-6 py-3.5 transition-all duration-300 rounded-sm cursor-pointer shadow-lg shadow-black/30"
                 >
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif text-[#F5F5F0] font-normal leading-tight md:leading-[1.15] tracking-tight hover:text-[#C9A84C] transition-colors duration-300">
-                    {heroPost.title}
-                  </h2>
+                  Read Continuous Critique
                 </button>
-
-                <p className="text-gray-400 font-sans text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-3 font-normal">
-                  {heroPost.excerpt}
-                </p>
-
-                {/* Author & Reading Stats */}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs text-gray-500 font-sans">
-                  <span className="font-semibold text-gray-300">
-                    By <span className="text-[#F5F5F0]">{heroPost.author}</span>
-                  </span>
-                  <span className="text-gray-600">|</span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} className="text-[#C9A84C]" />
-                    {heroPost.readTime}
-                  </span>
-                  <span className="text-gray-600">&bull;</span>
-                  <span>{formatRelativeTime(heroPost.publishedAt)}</span>
-                </div>
-
-                {/* Read More button */}
-                <div className="pt-2">
-                  <button
-                    onClick={() => handleCardClick(heroPost.slug)}
-                    className="bg-[#C9A84C] hover:bg-black hover:text-[#C9A84C] border border-transparent hover:border-[#C9A84C] text-black font-sans font-bold text-xs uppercase tracking-widest px-6 py-3.5 transition-all duration-300 rounded-sm cursor-pointer shadow-lg shadow-black/30"
-                  >
-                    Read Continuous Critique
-                  </button>
-                </div>
-
               </div>
+
             </div>
           </div>
         </section>
