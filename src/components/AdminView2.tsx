@@ -98,8 +98,8 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Predefined secure administrator credentials as requested
-    const validEmail = 'admin@thefilmjournal.com';
-    const validPassword = 'cinema-authority';
+    const validEmail = 'ahmed@thefilmjournal.com';
+    const validPassword = 'ahmed-cinema-authority';
 
     if (email === validEmail && password === validPassword) {
       setIsAuthenticated(true);
@@ -343,7 +343,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
               <label className="text-[10px] uppercase tracking-wider text-gray-400 block font-semibold">Admin Account Email</label>
               <input
                 type="email"
-                placeholder="admin@thefilmjournal.com"
+                placeholder="abc@tfj.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -376,9 +376,6 @@ export const AdminView: React.FC<AdminViewProps> = ({
               Access Command Deck
             </button>
             <div className="text-center">
-              <span className="text-[10px] text-gray-600 font-mono">
-                Hint: admin@thefilmjournal.com / cinema-authority
-              </span>
             </div>
           </form>
         </div>
@@ -773,36 +770,6 @@ export const AdminView: React.FC<AdminViewProps> = ({
                         </button>
                       </div>
                     </div>
-
-                    {/* Plain text paste converter */}
-                    <div className="flex items-center gap-2 mb-2">
-                      <textarea
-                        id="plain-paste-input"
-                        placeholder="Paste your plain article text here, then click Convert →"
-                        rows={4}
-                        className="flex-1 bg-black/20 border border-dashed border-[#C9A84C]/40 p-3 text-white font-sans text-xs focus:outline-none focus:border-[#C9A84C] rounded-sm leading-relaxed resize-none placeholder-gray-600"
-                      />
-                      <button
-                        type="button"
-                        title="Convert plain text to HTML paragraphs"
-                        onClick={() => {
-                          const input = (document.getElementById('plain-paste-input') as HTMLTextAreaElement)?.value || '';
-                          if (!input.trim()) return;
-                          const html = input
-                            .split(/\n\s*\n/)
-                            .map(p => p.trim())
-                            .filter(Boolean)
-                            .map(p => `<p>${p.replace(/\n/g, ' ')}</p>`)
-                            .join('\n');
-                          setPostBody(prev => prev ? prev + '\n' + html : html);
-                          (document.getElementById('plain-paste-input') as HTMLTextAreaElement).value = '';
-                        }}
-                        className="bg-[#C9A84C] hover:bg-yellow-500 text-black font-bold text-[10px] uppercase tracking-widest px-3 py-2 rounded-sm whitespace-nowrap cursor-pointer transition-colors"
-                      >
-                        Convert →
-                      </button>
-                    </div>
-                    <p className="text-[9px] text-gray-600 mb-2 uppercase tracking-wider">↑ Paste plain text above and hit Convert. Or write HTML directly below.</p>
 
                     <textarea
                       placeholder="Write rich HTML paragraphs, subheads, and pullquotes..."
