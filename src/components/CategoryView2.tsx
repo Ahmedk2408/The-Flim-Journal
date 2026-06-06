@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Post, Category } from '../types';
 import { formatRelativeTime } from '../data';
-import { LayoutGrid, AlertCircle, ChevronLeft, ChevronRight, Calendar, Star } from 'lucide-react';
+import { LayoutGrid, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CategoryViewProps {
   categorySlug: string;
@@ -81,104 +81,22 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
         </p>
       </div>
 
-      {/* ── UPCOMING RELEASES: Special Table Layout ── */}
-      {categorySlug === 'upcoming-releases' && categoryPosts.length > 0 && (
-        <div className="space-y-4">
-          {/* Table header */}
-          <div className="hidden md:grid grid-cols-[160px_1fr_140px_100px] gap-4 px-4 py-2 border-b border-[#2E2E2E] text-[10px] uppercase tracking-[0.2em] text-[#C9A84C] font-sans font-bold">
-            <span>Release Date</span>
-            <span>Film</span>
-            <span>Language / Type</span>
-            <span className="text-right">Anticipation</span>
-          </div>
-
-          {categoryPosts.map((post, idx) => {
-            // Parse anticipation score from excerpt (e.g. "Score: 85" or just show gold bars)
-            const scoreMatch = post.excerpt?.match(/score[:\s]+(\d+)/i);
-            const score = scoreMatch ? parseInt(scoreMatch[1]) : null;
-            const scoreColor = score !== null
-              ? score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-              : 'bg-[#C9A84C]';
-
-            // Format release date nicely from publishedAt field
-            const releaseDate = new Date(post.publishedAt);
-            const dateStr = releaseDate.toLocaleDateString('en-IN', {
-              day: 'numeric', month: 'short', year: 'numeric'
-            });
-
-            return (
-              <div
-                key={post.id}
-                onClick={() => handleCardClick(post.slug)}
-                className="grid grid-cols-1 md:grid-cols-[160px_1fr_140px_100px] gap-3 md:gap-4 items-center px-4 py-4 border border-[#2E2E2E] hover:border-[#C9A84C]/40 bg-[#111111] hover:bg-[#161616] rounded-sm cursor-pointer group transition-all duration-200"
-              >
-                {/* Date */}
-                <div className="flex items-center gap-2 text-xs text-gray-400 font-sans">
-                  <Calendar size={12} className="text-[#C9A84C] shrink-0" />
-                  <span>{dateStr}</span>
-                </div>
-
-                {/* Film title + excerpt */}
-                <div className="space-y-1">
-                  <h3 className="font-serif text-[#F5F5F0] text-base md:text-lg leading-snug group-hover:text-[#C9A84C] transition-colors duration-200">
-                    {post.title}
-                  </h3>
-                  {post.excerpt && (
-                    <p className="text-[11px] text-gray-500 font-sans line-clamp-1">{post.excerpt}</p>
-                  )}
-                </div>
-
-                {/* Author field repurposed as language/type label */}
-                <div className="text-xs text-gray-400 font-sans">
-                  {post.author && post.author !== '---' ? (
-                    <span className="border border-[#2E2E2E] px-2 py-1 rounded-sm text-[10px] uppercase tracking-wider">
-                      {post.author}
-                    </span>
-                  ) : null}
-                </div>
-
-                {/* Anticipation score badge */}
-                <div className="flex md:justify-end items-center gap-2">
-                  {score !== null ? (
-                    <span className={`${scoreColor} text-black font-bold text-sm px-3 py-1 rounded-sm font-sans min-w-[42px] text-center`}>
-                      {score}
-                    </span>
-                  ) : (
-                    <span className="flex gap-0.5">
-                      {[1,2,3,4,5].map(i => (
-                        <Star key={i} size={10} className="text-[#C9A84C]/40 fill-[#C9A84C]/20" />
-                      ))}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          <p className="text-[10px] text-gray-600 font-sans text-center pt-4 uppercase tracking-wider">
-            Add "Score: [number]" anywhere in the excerpt to show an anticipation score. Use the Author field for language/type (e.g. Hindi, English, OTT).
-          </p>
-        </div>
-      )}
-
-      {/* Articles Grid layout — hidden for upcoming-releases which has its own table */}
-      {categorySlug !== 'upcoming-releases' && categoryPosts.length === 0 && (
+      {/* Articles Grid layout */}
+      {categoryPosts.length === 0 ? (
         <div className="text-center py-20 border border-dashed border-[#2E2E2E] p-8 rounded-sm space-y-4 max-w-xl mx-auto">
           <AlertCircle size={32} className="mx-auto text-[#C9A84C]/60" />
           <h3 className="font-serif text-lg text-gray-200">No Articles Catalogued Yet</h3>
           <p className="text-xs text-gray-400 font-sans leading-relaxed">
             There are currently no published articles found under the category "{nameValue}". You can compose and publish news critiques under this section inside the CMS Admin Dashboard.
           </p>
-          <button
-            onClick={() => onNavigate('home')}
+          <button 
+            onClick={() => onNavigate('home')} 
             className="inline-block bg-[#2E2E2E] hover:bg-[#C9A84C] hover:text-black py-2 px-6 rounded-xs text-xs uppercase tracking-wider font-semibold duration-200 transition-all cursor-pointer"
           >
             Return to Homepage
           </button>
         </div>
-      )}
-
-      {categorySlug !== 'upcoming-releases' && categoryPosts.length > 0 && (
+      ) : (
         <div className="space-y-12">
           
           {/* Main Grid: 3 columns desktop, 2 tablet, 1 mobile */}
