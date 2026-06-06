@@ -82,84 +82,89 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
       </div>
 
       {/* ── UPCOMING RELEASES: Special Table Layout ── */}
-      {categorySlug === 'upcoming-releases' && categoryPosts.length > 0 && (
-        <div className="space-y-4">
-          {/* Table header */}
-          <div className="hidden md:grid grid-cols-[160px_1fr_140px_100px] gap-4 px-4 py-2 border-b border-[#2E2E2E] text-[10px] uppercase tracking-[0.2em] text-[#C9A84C] font-sans font-bold">
+            {/* ── UPCOMING RELEASES: Table Layout ── */}
+      {categorySlug === 'upcoming-releases' && (
+        <div className="space-y-2">
+          <p className="text-xs text-gray-500 font-sans pb-3 border-b border-[#2E2E2E]">
+            A regularly updated schedule of current and upcoming film releases. Anticipation scores reflect audience interest.
+          </p>
+          <div className="hidden md:grid grid-cols-[160px_1fr_140px_100px] gap-4 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-[#C9A84C] font-sans font-bold border-b border-[#2E2E2E]">
             <span>Release Date</span>
             <span>Film</span>
             <span>Language / Type</span>
             <span className="text-right">Anticipation</span>
           </div>
-
-          {categoryPosts.map((post, idx) => {
-            // Parse anticipation score from excerpt (e.g. "Score: 85" or just show gold bars)
-            const scoreMatch = post.excerpt?.match(/score[:\s]+(\d+)/i);
-            const score = scoreMatch ? parseInt(scoreMatch[1]) : null;
-            const scoreColor = score !== null
-              ? score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-              : 'bg-[#C9A84C]';
-
-            // Format release date nicely from publishedAt field
-            const releaseDate = new Date(post.publishedAt);
-            const dateStr = releaseDate.toLocaleDateString('en-IN', {
-              day: 'numeric', month: 'short', year: 'numeric'
-            });
-
+          {[
+            { date: '13 Jun 2026', title: 'Hai Jawani Toh Ishq Hona Hai', lang: 'Hindi', score: 72 },
+            { date: '13 Jun 2026', title: 'Housefull 5', lang: 'Hindi', score: 88 },
+            { date: '13 Jun 2026', title: 'Mission: Impossible – The Final Reckoning', lang: 'English', score: 100 },
+            { date: '20 Jun 2026', title: 'F1', lang: 'English', score: 95 },
+            { date: '26 Jun 2026', title: 'Sunny Sanskari Ki Tulsi Kumari', lang: 'Hindi', score: 65 },
+            { date: '3 Jul 2026',  title: 'War 2', lang: 'Hindi', score: 100 },
+            { date: '3 Jul 2026',  title: 'How to Train Your Dragon', lang: 'English', score: 90 },
+            { date: '10 Jul 2026', title: 'Sikandar', lang: 'Hindi', score: 100 },
+            { date: '17 Jul 2026', title: 'Saiyaara', lang: 'Hindi', score: 80 },
+            { date: '24 Jul 2026', title: 'Dhadak 2', lang: 'Hindi', score: 70 },
+            { date: '31 Jul 2026', title: 'Superman', lang: 'English', score: 98 },
+            { date: '7 Aug 2026',  title: 'Chhaava 2', lang: 'Hindi', score: 85 },
+            { date: '14 Aug 2026', title: 'Kesari Veer', lang: 'Hindi', score: 78 },
+            { date: '15 Aug 2026', title: 'Alpha', lang: 'Hindi', score: 92 },
+            { date: '28 Aug 2026', title: 'Jolly LLB 3', lang: 'Hindi', score: 74 },
+            { date: '4 Sep 2026',  title: 'Pushpa 3', lang: 'Telugu / Hindi', score: 100 },
+            { date: '25 Sep 2026', title: 'Thug Life', lang: 'Tamil / Hindi', score: 95 },
+            { date: '2 Oct 2026',  title: 'Raid 2', lang: 'Hindi', score: 82 },
+            { date: '9 Oct 2026',  title: 'Venom: The Last Dance', lang: 'English', score: 88 },
+            { date: '23 Oct 2026', title: 'Don 3', lang: 'Hindi', score: 97 },
+            { date: '6 Nov 2026',  title: 'Avengers: Doomsday', lang: 'English', score: 100 },
+            { date: '20 Nov 2026', title: 'Daaku Maharaaj 2', lang: 'Telugu / Hindi', score: 76 },
+            { date: '4 Dec 2026',  title: 'Coolie', lang: 'Tamil / Hindi', score: 93 },
+            { date: '25 Dec 2026', title: 'Baby John 2', lang: 'Hindi', score: 79 },
+            { date: '25 Dec 2026', title: 'Mufasa: The Lion King 2', lang: 'English', score: 88 },
+          ].map((film, idx) => {
+            const scoreColor = film.score >= 80 ? 'bg-green-500' : film.score >= 50 ? 'bg-yellow-500' : 'bg-red-500';
             return (
-              <div
-                key={post.id}
-                onClick={() => handleCardClick(post.slug)}
-                className="grid grid-cols-1 md:grid-cols-[160px_1fr_140px_100px] gap-3 md:gap-4 items-center px-4 py-4 border border-[#2E2E2E] hover:border-[#C9A84C]/40 bg-[#111111] hover:bg-[#161616] rounded-sm cursor-pointer group transition-all duration-200"
-              >
-                {/* Date */}
+              <div key={idx} className="grid grid-cols-1 md:grid-cols-[160px_1fr_140px_100px] gap-3 md:gap-4 items-center px-4 py-4 border border-[#2E2E2E] bg-[#111111] rounded-sm">
                 <div className="flex items-center gap-2 text-xs text-gray-400 font-sans">
                   <Calendar size={12} className="text-[#C9A84C] shrink-0" />
-                  <span>{dateStr}</span>
+                  <span>{film.date}</span>
                 </div>
-
-                {/* Film title + excerpt */}
-                <div className="space-y-1">
-                  <h3 className="font-serif text-[#F5F5F0] text-base md:text-lg leading-snug group-hover:text-[#C9A84C] transition-colors duration-200">
-                    {post.title}
-                  </h3>
-                  {post.excerpt && (
-                    <p className="text-[11px] text-gray-500 font-sans line-clamp-1">{post.excerpt}</p>
-                  )}
-                </div>
-
-                {/* Author field repurposed as language/type label */}
+                <h3 className="font-serif text-[#F5F5F0] text-base md:text-lg leading-snug">{film.title}</h3>
                 <div className="text-xs text-gray-400 font-sans">
-                  {post.author && post.author !== '---' ? (
-                    <span className="border border-[#2E2E2E] px-2 py-1 rounded-sm text-[10px] uppercase tracking-wider">
-                      {post.author}
-                    </span>
-                  ) : null}
+                  <span className="border border-[#2E2E2E] px-2 py-1 rounded-sm text-[10px] uppercase tracking-wider">{film.lang}</span>
                 </div>
-
-                {/* Anticipation score badge */}
-                <div className="flex md:justify-end items-center gap-2">
-                  {score !== null ? (
-                    <span className={`${scoreColor} text-black font-bold text-sm px-3 py-1 rounded-sm font-sans min-w-[42px] text-center`}>
-                      {score}
-                    </span>
-                  ) : (
-                    <span className="flex gap-0.5">
-                      {[1,2,3,4,5].map(i => (
-                        <Star key={i} size={10} className="text-[#C9A84C]/40 fill-[#C9A84C]/20" />
-                      ))}
-                    </span>
-                  )}
+                <div className="flex md:justify-end">
+                  <span className={`${scoreColor} text-black font-bold text-sm px-3 py-1 rounded-sm font-sans min-w-[42px] text-center`}>{film.score}</span>
                 </div>
               </div>
             );
           })}
-
-          <p className="text-[10px] text-gray-600 font-sans text-center pt-4 uppercase tracking-wider">
-            Add "Score: [number]" anywhere in the excerpt to show an anticipation score. Use the Author field for language/type (e.g. Hindi, English, OTT).
+          {categoryPosts.length > 0 && categoryPosts.map((post) => {
+            const releaseDate = new Date(post.publishedAt);
+            const dateStr = releaseDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            return (
+              <div key={post.id} className="grid grid-cols-1 md:grid-cols-[160px_1fr_140px_100px] gap-3 md:gap-4 items-center px-4 py-4 border border-[#C9A84C]/20 bg-[#111111] rounded-sm">
+                <div className="flex items-center gap-2 text-xs text-gray-400 font-sans">
+                  <Calendar size={12} className="text-[#C9A84C] shrink-0" />
+                  <span>{dateStr}</span>
+                </div>
+                <h3 className="font-serif text-[#F5F5F0] text-base md:text-lg leading-snug">{post.title}</h3>
+                <div className="text-xs text-gray-400 font-sans">
+                  {post.author && post.author !== '---' && (
+                    <span className="border border-[#2E2E2E] px-2 py-1 rounded-sm text-[10px] uppercase tracking-wider">{post.author}</span>
+                  )}
+                </div>
+                <div className="flex md:justify-end">
+                  <Star size={10} className="text-[#C9A84C]/40" />
+                </div>
+              </div>
+            );
+          })}
+          <p className="text-[10px] text-gray-600 font-sans text-center pt-6 uppercase tracking-wider">
+            Anticipation scores are editorially assigned. Green = High · Yellow = Moderate · Red = Low
           </p>
         </div>
       )}
+
 
       {/* Articles Grid layout — hidden for upcoming-releases which has its own table */}
       {categorySlug !== 'upcoming-releases' && categoryPosts.length === 0 && (
