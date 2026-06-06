@@ -343,7 +343,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
               <label className="text-[10px] uppercase tracking-wider text-gray-400 block font-semibold">Admin Account Email</label>
               <input
                 type="email"
-                placeholder="admin@thefilmjournal.com"
+                placeholder="abc@tfj.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -376,9 +376,6 @@ export const AdminView: React.FC<AdminViewProps> = ({
               Access Command Deck
             </button>
             <div className="text-center">
-              <span className="text-[10px] text-gray-600 font-mono">
-                Hint: admin@thefilmjournal.com / cinema-authority
-              </span>
             </div>
           </form>
         </div>
