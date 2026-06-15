@@ -11,6 +11,7 @@ const BASE_URL = 'https://www.thefilmjournal.in';
 const DEFAULT_IMAGE = `${BASE_URL}/assets/Official_logo.png`;
 const SITE_NAME = 'The Film Journal';
 
+// Bot user agents that read OG tags (WhatsApp, Facebook, Twitter, Telegram etc.)
 const BOT_AGENTS = [
   'whatsapp', 'facebookexternalhit', 'twitterbot', 'telegrambot',
   'linkedinbot', 'slackbot', 'discordbot', 'googlebot', 'bingbot',
@@ -30,19 +31,11 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;');
 }
 
-// Only use image if it's a real hosted URL, not base64
-function getSafeImage(image) {
-  if (!image) return DEFAULT_IMAGE;
-  if (image.startsWith('data:')) return DEFAULT_IMAGE; // base64 — skip
-  if (image.startsWith('http')) return image; // real URL — use it
-  return DEFAULT_IMAGE;
-}
-
 export default async function handler(req, res) {
   const slug = req.query.slug;
   const userAgent = req.headers['user-agent'] || '';
 
-  // Real browser — serve the normal React app
+  // Real browser — just serve the normal React index.html
   if (!isBot(userAgent)) {
     try {
       const indexPath = join(process.cwd(), 'dist', 'index.html');
@@ -54,7 +47,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // Bot — fetch article and return dynamic OG tags
+  // Bot — fetch article from Supabase and return dynamic OG tags
   let title = SITE_NAME;
   let description = 'Authoritative. Independent. Cinematic. Premium film reviews, interviews, and entertainment news.';
   let image = DEFAULT_IMAGE;
@@ -72,7 +65,7 @@ export default async function handler(req, res) {
       if (post) {
         title = `${post.title} | ${SITE_NAME}`;
         description = post.excerpt || description;
-        image = getSafeImage(post.image); // safely handle base64
+        image = post.image || DEFAULT_IMAGE;
       }
     } catch (e) {
       // Fall through to defaults
