@@ -2,6 +2,13 @@
   "rewrites": [
     {
       "source": "/article/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(WhatsApp|facebookexternalhit|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Googlebot|Bingbot|Applebot|Pinterest|Instagram|Snapchat).*"
+        }
+      ],
       "destination": "/api/og?slug=:slug"
     },
     {
