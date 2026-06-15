@@ -6,7 +6,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(WhatsApp|facebookexternalhit|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Googlebot|Bingbot|Applebot|Pinterest|Instagram|Snapchat).*"
+          "value": "(?i).*(whatsapp|facebookexternalhit|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|googlebot|bingbot|applebot|pinterest|instagram|snapchat|xbot|x\\.com).*"
         }
       ],
       "destination": "/api/og?slug=:slug"
