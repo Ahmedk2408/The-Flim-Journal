@@ -1,66 +1,70 @@
-import React from 'react';
-import { Logo } from './Logo';
-import { Facebook, Twitter, Instagram, ArrowUp, Film } from 'lucide-react';
+import React from "react";
+import { Logo } from "./Logo";
+import { Facebook, Twitter, Instagram, ArrowUp, Film } from "lucide-react";
 
 interface FooterProps {
-  onNavigate: (view: string, category?: string | null, slug?: string | null) => void;
+  onNavigate: (
+    view: string,
+    category?: string | null,
+    slug?: string | null,
+  ) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const categories = [
-    { name: 'Reviews', slug: 'reviews' },
-    { name: 'News', slug: 'news' },
-    { name: 'Features', slug: 'features' },
-    { name: 'Interviews', slug: 'interviews' },
-    { name: 'Box Office', slug: 'box-office' },
-    { name: 'Streaming', slug: 'streaming' }
+    { name: "Box Office Updates", slug: "box-office-updates" },
+    { name: "Reviews", slug: "reviews" },
+    { name: "Monday Drop", slug: "monday-drop" },
+    { name: "Upcoming Releases", slug: "upcoming-releases" },
+    { name: "Whats Hot", slug: "whats-hot" },
+    { name: "News", slug: "news" },
   ];
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer 
+    <footer
       id="site-editorial-footer"
       className="bg-[#111111] border-t border-[#2E2E2E] mt-16 text-[#F5F5F0]/65 text-sm"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 pb-12 border-b border-[#2E2E2E]">
-          
           {/* Col 1: Logo & Tagline */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center">
               <Logo size="md" variant="full" className="opacity-90 max-w-xs" />
             </div>
             <p className="font-serif italic text-[#F5F5F0]/80 pr-0 md:pr-12 leading-relaxed">
-              "Providing rigorous film criticism, authoritative reviews, exclusive interview dialogues, and inside box office analysis for the demanding cinephile."
+              "Providing rigorous film criticism, authoritative reviews,
+              exclusive interview dialogues, and inside box office analysis for
+              the demanding cinephile."
             </p>
             <div className="flex space-x-4 pt-2">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
                 className="p-2 border border-[#2E2E2E] hover:border-[#C9A84C] text-[#F5F5F0]/70 hover:text-[#C9A84C] transition-all rounded-sm"
                 aria-label="Facebook Profile"
               >
                 <Facebook size={16} />
               </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noreferrer"
                 className="p-2 border border-[#2E2E2E] hover:border-[#C9A84C] text-[#F5F5F0]/70 hover:text-[#C9A84C] transition-all rounded-sm"
                 aria-label="Twitter X Profile"
               >
                 <Twitter size={16} />
               </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
                 className="p-2 border border-[#2E2E2E] hover:border-[#C9A84C] text-[#F5F5F0]/70 hover:text-[#C9A84C] transition-all rounded-sm"
                 aria-label="Instagram Profile"
               >
@@ -71,12 +75,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Col 2: Navigation Links */}
           <div className="space-y-4">
-            <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">Sections</h4>
+            <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">
+              Sections
+            </h4>
             <ul className="space-y-2 text-xs">
               {categories.map((cat) => (
                 <li key={cat.slug}>
-                  <button 
-                    onClick={() => { onNavigate('category', cat.slug); window.scrollTo(0,0); }}
+                  <button
+                    onClick={() => {
+                      onNavigate("category", cat.slug);
+                      window.scrollTo(0, 0);
+                    }}
                     className="hover:text-white hover:underline transition-all duration-200 text-left uppercase cursor-pointer tracking-wider"
                   >
                     {cat.name}
@@ -88,19 +97,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Col 3: About Links */}
           <div className="space-y-4">
-            <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">Journal</h4>
+            <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">
+              Journal
+            </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <button 
-                  onClick={() => { onNavigate('about'); window.scrollTo(0,0); }}
+                <button
+                  onClick={() => {
+                    onNavigate("about");
+                    window.scrollTo(0, 0);
+                  }}
                   className="hover:text-white hover:underline transition-all duration-200 text-left uppercase cursor-pointer tracking-wider"
                 >
                   Our Mission & About
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => { onNavigate('about'); window.scrollTo(0, 0); }}
+                <button
+                  onClick={() => {
+                    onNavigate("about");
+                    window.scrollTo(0, 0);
+                  }}
                   className="hover:text-white hover:underline transition-all duration-200 text-left uppercase cursor-pointer tracking-wider"
                 >
                   Masthead Staff
@@ -113,7 +130,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
             </ul>
           </div>
-
         </div>
 
         {/* Bottom Section */}
@@ -130,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Scroll to Top and Secure Admin doorway */}
           <div className="flex items-center space-x-6">
             <button
-              onClick={() => onNavigate('admin')}
+              onClick={() => onNavigate("admin")}
               className="text-[10px] uppercase font-mono tracking-wider font-light text-gray-700 hover:text-[#C9A84C] transition duration-200 cursor-pointer"
               aria-label="Editorial Login CMS Entry"
             >
@@ -142,11 +158,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               aria-label="Scroll to top of publication"
             >
               <span>Back to Top</span>
-              <ArrowUp size={11} className="group-hover:-translate-y-0.5 duration-200" />
+              <ArrowUp
+                size={11}
+                className="group-hover:-translate-y-0.5 duration-200"
+              />
             </button>
           </div>
         </div>
-
       </div>
     </footer>
   );
