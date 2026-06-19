@@ -7,6 +7,7 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
+import { Loader } from "./components/Loader";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { Marquee } from "./components/Marquee";
@@ -40,6 +41,8 @@ interface AppData {
   handleDeletePost: (id: string) => Promise<void>;
   handleUpdateCategories: (cats: Category[]) => Promise<void>;
   handleUpdateSettings: (s: SiteSettings) => Promise<void>;
+  /** True once the loader has finished its retract — triggers the cascade reveal. */
+  revealed: boolean;
 }
 
 // ── Inner app that has access to router hooks ──
@@ -71,25 +74,30 @@ function AppInner({ data }: { data: AppData }) {
   };
 
   const isAdmin = location.pathname.startsWith("/admin");
+  const reveal = data.revealed;
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#1a1a1a] text-[#F5F5F0]">
       <div>
-        <Header
-          currentView={isAdmin ? "admin" : "home"}
-          selectedCategory={null}
-          onNavigate={handleNavigate}
-          onSearch={handleSearchTrigger}
-        />
+        <div className={`tfj-reveal tfj-reveal--1 ${reveal ? "tfj-reveal--go" : ""}`}>
+          <Header
+            currentView={isAdmin ? "admin" : "home"}
+            selectedCategory={null}
+            onNavigate={handleNavigate}
+            onSearch={handleSearchTrigger}
+          />
+        </div>
 
         {!isAdmin && posts.length > 0 && (
-          <Marquee
-            posts={posts}
-            onArticleClick={(slug) => navigate(`/article/${slug}`)}
-          />
+          <div className={`tfj-reveal tfj-reveal--2 ${reveal ? "tfj-reveal--go" : ""}`}>
+            <Marquee
+              posts={posts}
+              onArticleClick={(slug) => navigate(`/article/${slug}`)}
+            />
+          </div>
         )}
 
-        <main className="flex-grow">
+        <main className={`flex-grow tfj-reveal tfj-reveal--3 ${reveal ? "tfj-reveal--go" : ""}`}>
           <Routes>
             <Route
               path="/"
@@ -153,7 +161,9 @@ function AppInner({ data }: { data: AppData }) {
         </main>
       </div>
 
-      <Footer onNavigate={handleNavigate} />
+      <div className={`tfj-reveal tfj-reveal--4 ${reveal ? "tfj-reveal--go" : ""}`}>
+        <Footer onNavigate={handleNavigate} />
+      </div>
     </div>
   );
 }
@@ -279,18 +289,23 @@ export default function App() {
     await saveSettings(s);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
-        <div className="text-center">
-          <div className="text-[#C9A84C] font-serif text-4xl mb-4">TFJ</div>
-          <div className="text-[#F5F5F0]/50 text-sm uppercase tracking-widest">
-            Loading...
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Two-phase loader: while `loading`, bars cover the screen; once false,
+  // bars retract to reveal the app beneath. `loaderGone` unmounts the overlay
+  // entirely after the retract animation finishes so it never traps clicks.
+  // `revealed` flips on the moment bars start retracting, so the cascade-in
+  // animation of the shell runs in lockstep with the curtain lifting.
+  const [loaderClosing, setLoaderClosing] = useState(false);
+  const [loaderGone, setLoaderGone] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      setLoaderClosing(true);
+      setRevealed(true);
+      const t = setTimeout(() => setLoaderGone(true), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [loading]);
 
   const data = {
     posts,
@@ -301,10 +316,15 @@ export default function App() {
     handleDeletePost,
     handleUpdateCategories,
     handleUpdateSettings,
+    revealed,
   };
 
   return (
     <BrowserRouter>
+      {/* Render the app immediately so the bars can reveal real content.
+          Until data is loaded the app shell renders empty, but the letterbox
+          covers it, so users never see a blank stage. */}
+      {!loaderGone && <Loader closing={loaderClosing} />}
       <AppInner data={data} />
     </BrowserRouter>
   );
