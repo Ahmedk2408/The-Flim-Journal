@@ -269,8 +269,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
                   Must Watch Preview
                 </h4>
                 <span className="text-[10px] text-gray-500 font-mono">Cannes Critics Cut</span>
-              </div>
-              */}
+              </div>*/}
+
               {/* Theater View Box */}
               <div className="relative aspect-[16/9.5] overflow-hidden bg-black border border-[#2E2E2E] rounded-xs group flex items-center justify-center">
                 <img
