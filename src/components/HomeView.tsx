@@ -263,8 +263,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
             </div>
 
             {/* WIDGET 2: Must Watch Video Embed Placeholder */}
-            {/*<div id="sidebar-trailer-widget" className="bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#2E2E2E]">
+            {/*<div id="sidebar-trailer-widget" className="bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm space-y-4">*/}
+              {/*<div className="flex items-center justify-between pb-3 border-b border-[#2E2E2E]">
                 <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">
                   Must Watch Preview
                 </h4>
@@ -272,7 +272,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
               </div>*/}
 
               {/* Theater View Box */}
-              <div className="relative aspect-[16/9.5] overflow-hidden bg-black border border-[#2E2E2E] rounded-xs group flex items-center justify-center">
+              {/*<div className="relative aspect-[16/9.5] overflow-hidden bg-black border border-[#2E2E2E] rounded-xs group flex items-center justify-center">
                 <img
                   src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=600&auto=format&fit=crop"
                   alt="Trailers Screen"
@@ -290,7 +290,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
               <p className="text-xs font-serif italic text-gray-400 leading-relaxed text-center mt-2 pr-1">
                 Sophia Al-Kindi's official festival trailer for "Silence of the Fog" (2025 Grand Jury Selection).
               </p>
-            </div>
+            </div>*/}
 
             {/* WIDGET 3: Premium Editorial Newsletter */}
             <div id="sidebar-newsletter-widget" className="bg-[#111111] border-2 border-[#C9A84C]/25 p-6 rounded-sm relative overflow-hidden">
