@@ -13,7 +13,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
   const published = [...posts].filter((p) => p.status === 'Published');
 
   // Sort by published date descending
-  const sortedPosts = [...published].sort((a, b) => 
+  const sortedPosts = [...published].sort((a, b) =>
     new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
 
@@ -50,7 +50,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
 
   return (
     <div id="homepage-root" className="space-y-12">
-      
+
       {/* 1. CINEMATIC HERO SECTION */}
       {heroPost && (
         <section
@@ -180,7 +180,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
       {/* 3. LATEST NEWS & SIDEBAR SPLIT (2 columns) */}
       <section id="editorial-feed" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
+
           {/* LEFT SIDE: Latest Articles (Wide, 2 cols of space) */}
           <div className="lg:col-span-2 space-y-8">
             <div className="border-b border-[#2E2E2E] pb-3 mb-6">
@@ -222,7 +222,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
                       <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
                         {post.excerpt}
                       </p>
-                      
+
                       <div className="flex items-center gap-3 pt-1.5 text-[10px] text-gray-500 font-mono">
                         <span>By {post.author}</span>
                         <span>&bull;</span>
@@ -237,7 +237,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
 
           {/* RIGHT SIDEBAR: Content Widgets (Narrow, 1 col) */}
           <div className="space-y-10 lg:pl-4">
-            
+
             {/* WIDGET 1: Trending List */}
             <div id="sidebar-trending-widget" className="bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm space-y-4">
               <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest pb-3 border-b border-[#2E2E2E]">
@@ -263,23 +263,23 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
             </div>
 
             {/* WIDGET 2: Must Watch Video Embed Placeholder */}
-            <div id="sidebar-trailer-widget" className="bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm space-y-4">
+            {/*<div id="sidebar-trailer-widget" className="bg-[#111111] border border-[#2E2E2E] p-6 rounded-sm space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#2E2E2E]">
                 <h4 className="text-[#C9A84C] text-xs font-sans font-bold uppercase tracking-widest">
                   Must Watch Preview
                 </h4>
                 <span className="text-[10px] text-gray-500 font-mono">Cannes Critics Cut</span>
               </div>
-              
+              */}
               {/* Theater View Box */}
               <div className="relative aspect-[16/9.5] overflow-hidden bg-black border border-[#2E2E2E] rounded-xs group flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=600&auto=format&fit=crop" 
-                  alt="Trailers Screen" 
+                <img
+                  src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=600&auto=format&fit=crop"
+                  alt="Trailers Screen"
                   className="w-full h-full object-cover opacity-60 transition duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 duration-300" />
-                <button 
+                <button
                   className="absolute p-3 rounded-full bg-[#C9A84C] text-black hover:scale-110 active:scale-95 duration-200 cursor-pointer shadow-lg shadow-black/80 flex items-center justify-center"
                   aria-label="Play Trailer Frame"
                   onClick={() => alert("Playing Official Festival Trailer: Sophia Al-Kindi's 'Silence of the Fog' (Aesthetics Premiere)")}
@@ -297,7 +297,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
               <div className="absolute -right-8 -bottom-8 opacity-5 text-gray-300 select-none">
                 <Mail size={120} />
               </div>
-              
+
               <div className="space-y-4 relative z-10">
                 <span className="inline-block text-[#C9A84C] text-[9px] font-sans font-extrabold uppercase tracking-widest border border-[#C9A84C]/30 px-2 py-0.5 rounded-xs">
                   The Letterbox Select
@@ -347,7 +347,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ posts, onNavigate }) => {
       {/* 4. CATEGORY SPOTLIGHTS & SPOTLIGHT DRAWER (Reviews, Features, Interviews) */}
       <section id="category-spotlights" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#2E2E2E] pt-12">
         <div className="space-y-12">
-          
+
           {['Reviews', 'Features', 'Interviews'].map((catName) => {
             const catArticles = published
               .filter(p => p.category === catName)
